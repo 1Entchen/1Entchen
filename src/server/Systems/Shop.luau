@@ -104,7 +104,7 @@ local function onBuySeed(player: Player, rawSpecies: unknown, rawQuantity: unkno
 		Notify.player(player, `{species.name} seeds unlock after Rebirth {species.requiresRebirth}.`, "error")
 		return
 	end
-	if not Validate.near(player, Plots.world().shopCounter.Position, Config.Shop.ReachDistance) then
+	if not Validate.near(player, Plots.world().shopCounter.CFrame.Position, Config.Shop.ReachDistance) then
 		Notify.player(player, "Visit the Seed Shop to buy seeds.", "error")
 		return
 	end

@@ -20,7 +20,9 @@ end
 
 function Test.it(name, fn)
 	local label = fullName(name)
-	local ok, err = xpcall(fn, debug.traceback)
+	-- pcall (not xpcall) so errors carrying userdata or raised from resumed
+	-- coroutines are still reported verbatim.
+	local ok, err = pcall(fn)
 	if ok then
 		results.passed += 1
 	else

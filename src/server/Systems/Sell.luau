@@ -34,7 +34,7 @@ local function canSellHere(player: Player): boolean
 	if Monetization.owns(player, "sell_anywhere") then
 		return true
 	end
-	return Validate.near(player, Plots.world().sellCounter.Position, Config.Sell.ReachDistance)
+	return Validate.near(player, Plots.world().sellCounter.CFrame.Position, Config.Sell.ReachDistance)
 end
 
 local function finishSale(player: Player, data: Profile, total: number, count: number)

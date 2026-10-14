@@ -329,7 +329,7 @@ local function nearPlot(player: Player, state: GardenState): boolean
 end
 
 local function onPlant(player: Player, rawTile: unknown, rawSpecies: unknown)
-	if not RateLimiter.allow(player, "Plant", 8, 12) then
+	if not RateLimiter.allow(player, "Plant", 15, 30) then
 		return
 	end
 	local tile = Validate.integer(rawTile, 1, MAX_TILE)

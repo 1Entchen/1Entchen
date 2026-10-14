@@ -282,24 +282,18 @@ local function buildPlot(parent: Instance, index: number, origin: CFrame): PlotR
 	-- Fence with a gap at the front (toward the hub).
 	local fenceColor = Color3.fromRGB(240, 230, 210)
 	local function rail(cf: CFrame, length: number)
-		part(
-			{
-				Name = "Rail",
-				Size = Vector3.new(length, 0.5, 0.4),
-				CFrame = cf * CFrame.new(0, 2.6, 0),
-				Color = fenceColor,
-			},
-			model
-		)
-		part(
-			{
-				Name = "Rail",
-				Size = Vector3.new(length, 0.5, 0.4),
-				CFrame = cf * CFrame.new(0, 1.6, 0),
-				Color = fenceColor,
-			},
-			model
-		)
+		part({
+			Name = "Rail",
+			Size = Vector3.new(length, 0.5, 0.4),
+			CFrame = cf * CFrame.new(0, 2.6, 0),
+			Color = fenceColor,
+		}, model)
+		part({
+			Name = "Rail",
+			Size = Vector3.new(length, 0.5, 0.4),
+			CFrame = cf * CFrame.new(0, 1.6, 0),
+			Color = fenceColor,
+		}, model)
 	end
 	rail(origin * CFrame.new(0, 0, 21.8), 46)
 	rail(origin * CFrame.new(-22.8, 0, 0) * CFrame.Angles(0, math.rad(90), 0), 44)
@@ -307,24 +301,18 @@ local function buildPlot(parent: Instance, index: number, origin: CFrame): PlotR
 	rail(origin * CFrame.new(-15, 0, -21.8), 16)
 	rail(origin * CFrame.new(15, 0, -21.8), 16)
 	for _, x in { -22.8, -7, 7, 22.8 } do
-		part(
-			{
-				Name = "FencePost",
-				Size = Vector3.new(0.8, 3.6, 0.8),
-				CFrame = origin * CFrame.new(x, 1.8, -21.8),
-				Color = accent,
-			},
-			model
-		)
-		part(
-			{
-				Name = "FencePost",
-				Size = Vector3.new(0.8, 3.6, 0.8),
-				CFrame = origin * CFrame.new(x, 1.8, 21.8),
-				Color = accent,
-			},
-			model
-		)
+		part({
+			Name = "FencePost",
+			Size = Vector3.new(0.8, 3.6, 0.8),
+			CFrame = origin * CFrame.new(x, 1.8, -21.8),
+			Color = accent,
+		}, model)
+		part({
+			Name = "FencePost",
+			Size = Vector3.new(0.8, 3.6, 0.8),
+			CFrame = origin * CFrame.new(x, 1.8, 21.8),
+			Color = accent,
+		}, model)
 	end
 
 	-- Owner sign at the entrance.
@@ -408,16 +396,13 @@ function World.build(): WorldRecord
 			{ Vector3.new(-236, 30, 0), Vector3.new(4, 60, 480) },
 		}
 	do
-		part(
-			{
-				Name = "Boundary",
-				Size = wall[2],
-				CFrame = CFrame.new(wall[1]),
-				Transparency = 1,
-				CanQuery = false,
-			},
-			root
-		)
+		part({
+			Name = "Boundary",
+			Size = wall[2],
+			CFrame = CFrame.new(wall[1]),
+			Transparency = 1,
+			CanQuery = false,
+		}, root)
 	end
 
 	-- Hub plaza.

@@ -64,7 +64,7 @@ end
 
 local function addAccessories(speciesId: string, model: Model, body: BasePart, s: number, accent: Color3)
 	local radius = BODY_DIAMETER * s / 2
-	local top = body.Position + Vector3.new(0, radius * 0.92, 0)
+	local top = body.CFrame.Position + Vector3.new(0, radius * 0.92, 0)
 
 	if speciesId == "bubble" then
 		local b = ball("Bubble", 0.7 * s, CFrame.new(top + Vector3.new(0.6 * s, 0.2 * s, 0)), accent, model)
@@ -156,7 +156,7 @@ local function addAccessories(speciesId: string, model: Model, body: BasePart, s
 		orbit.Parent = model
 		for i = 1, 8 do
 			local angle = (i / 8) * math.pi * 2
-			local position = body.Position
+			local position = body.CFrame.Position
 				+ Vector3.new(
 					math.cos(angle) * radius * 1.35,
 					math.sin(angle) * radius * 0.35,
@@ -202,14 +202,11 @@ local function applyMutations(model: Model, body: BasePart, mutations: { string 
 		})
 	end
 	if hasMutation(mutations, "shiny") then
-		emitter(
-			body,
-			{
-				Color = ColorSequence.new(Color3.fromRGB(255, 255, 220)),
-				Rate = 6,
-				Size = NumberSequence.new(0.35 * s, 0),
-			}
-		)
+		emitter(body, {
+			Color = ColorSequence.new(Color3.fromRGB(255, 255, 220)),
+			Rate = 6,
+			Size = NumberSequence.new(0.35 * s, 0),
+		})
 	end
 	if hasMutation(mutations, "starstruck") then
 		emitter(body, {
