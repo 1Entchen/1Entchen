@@ -182,7 +182,7 @@ local function buildStall(
 	-- Shopkeeper slime behind the counter, raised so it peeks over and faces customers.
 	local keeper = SlimeBuilder.build(keeperSpecies, {}, 1.8)
 	keeper.Name = "Keeper"
-	keeper:PivotTo(cf * CFrame.new(0, 2.4, 3.8))
+	keeper:PivotTo(cf * CFrame.new(0, 2.9, 3.8))
 	keeper:SetAttribute("Bounce", true)
 	keeper.Parent = model
 
@@ -245,7 +245,7 @@ local function buildPlot(parent: Instance, index: number, origin: CFrame): PlotR
 	part({
 		Name = "Base",
 		Size = Vector3.new(46, 1, 44),
-		CFrame = origin * CFrame.new(0, 0.5, 0),
+		CFrame = origin * CFrame.new(0, -0.2, 0), -- top at 0.3 so players walk straight on
 		Color = Color3.fromRGB(96, 178, 80),
 		Material = Enum.Material.Grass,
 	}, model)
@@ -253,8 +253,8 @@ local function buildPlot(parent: Instance, index: number, origin: CFrame): PlotR
 	-- Garden bed under the tiles.
 	part({
 		Name = "Bed",
-		Size = Vector3.new(38, 0.6, 32),
-		CFrame = origin * CFrame.new(0, 1.1, 1),
+		Size = Vector3.new(38, 0.4, 32),
+		CFrame = origin * CFrame.new(0, 0.5, 1),
 		Color = Color3.fromRGB(95, 66, 45),
 		Material = Enum.Material.Ground,
 	}, model)
@@ -269,8 +269,8 @@ local function buildPlot(parent: Instance, index: number, origin: CFrame): PlotR
 			local z = -11 + (row - 1) * pitch
 			local tile = part({
 				Name = `Tile{tileIndex}`,
-				Size = Vector3.new(cfg.TileSize, 0.6, cfg.TileSize),
-				CFrame = origin * CFrame.new(x, 1.5, z),
+				Size = Vector3.new(cfg.TileSize, 0.4, cfg.TileSize),
+				CFrame = origin * CFrame.new(x, 0.85, z),
 				Color = Color3.fromRGB(122, 84, 56),
 				Material = Enum.Material.Ground,
 			}, model)
@@ -412,16 +412,16 @@ function World.build(): WorldRecord
 	part({
 		Name = "PlazaRim",
 		Shape = Enum.PartType.Cylinder,
-		Size = Vector3.new(0.8, 78, 78),
-		CFrame = CFrame.new(0, 0.4, 0) * CFrame.Angles(0, 0, math.rad(90)),
+		Size = Vector3.new(0.3, 78, 78),
+		CFrame = CFrame.new(0, 0.15, 0) * CFrame.Angles(0, 0, math.rad(90)),
 		Color = Color3.fromRGB(200, 180, 150),
 		Material = Enum.Material.Cobblestone,
 	}, hub)
 	part({
 		Name = "Plaza",
 		Shape = Enum.PartType.Cylinder,
-		Size = Vector3.new(1, 72, 72),
-		CFrame = CFrame.new(0, 0.5, 0) * CFrame.Angles(0, 0, math.rad(90)),
+		Size = Vector3.new(0.5, 72, 72),
+		CFrame = CFrame.new(0, 0.25, 0) * CFrame.Angles(0, 0, math.rad(90)),
 		Color = Color3.fromRGB(238, 222, 190),
 		Material = Enum.Material.Slate,
 	}, hub)
@@ -430,7 +430,7 @@ function World.build(): WorldRecord
 	spawnLocation.Name = "HubSpawn"
 	spawnLocation.Anchored = true
 	spawnLocation.Size = Vector3.new(8, 1, 8)
-	spawnLocation.CFrame = CFrame.new(0, 1.1, 14)
+	spawnLocation.CFrame = CFrame.new(0, 0.6, 14)
 	spawnLocation.Transparency = 1
 	spawnLocation.CanCollide = false
 	spawnLocation.Neutral = true
@@ -442,7 +442,7 @@ function World.build(): WorldRecord
 		Name = "FountainBowl",
 		Shape = Enum.PartType.Cylinder,
 		Size = Vector3.new(1.6, 12, 12),
-		CFrame = CFrame.new(0, 1.8, 0) * CFrame.Angles(0, 0, math.rad(90)),
+		CFrame = CFrame.new(0, 1.3, 0) * CFrame.Angles(0, 0, math.rad(90)),
 		Color = Color3.fromRGB(210, 200, 220),
 		Material = Enum.Material.Marble,
 	}, hub)
@@ -450,7 +450,7 @@ function World.build(): WorldRecord
 		Name = "FountainGoo",
 		Shape = Enum.PartType.Cylinder,
 		Size = Vector3.new(0.4, 10.6, 10.6),
-		CFrame = CFrame.new(0, 2.5, 0) * CFrame.Angles(0, 0, math.rad(90)),
+		CFrame = CFrame.new(0, 2.0, 0) * CFrame.Angles(0, 0, math.rad(90)),
 		Color = Color3.fromRGB(120, 235, 110),
 		Material = Enum.Material.Glass,
 		Transparency = 0.25,
@@ -458,7 +458,7 @@ function World.build(): WorldRecord
 	}, hub)
 	local fountainSlime = SlimeBuilder.build("goo", { "shiny" }, 1.8)
 	fountainSlime.Name = "FountainSlime"
-	fountainSlime:PivotTo(CFrame.new(0, 2.4, 0))
+	fountainSlime:PivotTo(CFrame.new(0, 1.9, 0))
 	fountainSlime:SetAttribute("Bounce", true)
 	fountainSlime.Parent = hub
 	local sparkle = Instance.new("ParticleEmitter")
@@ -473,7 +473,7 @@ function World.build(): WorldRecord
 	sparkle.Parent = goo
 
 	-- Seed shop (faces the hub centre from the north) and sell stand (south).
-	local shopCf = CFrame.lookAt(Vector3.new(0, 1, -26), Vector3.new(0, 1, 0))
+	local shopCf = CFrame.lookAt(Vector3.new(0, 0.5, -26), Vector3.new(0, 0.5, 0))
 	local shopCounter = buildStall(
 		hub,
 		"SeedShop",
@@ -485,7 +485,7 @@ function World.build(): WorldRecord
 	)
 	prompt(shopCounter, "Open Shop", "Seed Shop", "ShopPrompt")
 
-	local sellCf = CFrame.lookAt(Vector3.new(0, 1, 26), Vector3.new(0, 1, 0))
+	local sellCf = CFrame.lookAt(Vector3.new(0, 0.5, 26), Vector3.new(0, 0.5, 0))
 	local sellCounter = buildStall(
 		hub,
 		"SellStand",

@@ -243,8 +243,8 @@ function Notifications.start()
 		Name = "Toasts",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
-		Position = UDim2.new(0.5, 0, 0, 150),
-		Size = UDim2.fromOffset(460, 300),
+		Position = UDim2.new(0.5, 0, 0, 222),
+		Size = UDim2.fromOffset(460, 200),
 		Parent = canvas,
 	})
 	Kit.list(Enum.FillDirection.Vertical, 6, Enum.HorizontalAlignment.Center).Parent = toastList

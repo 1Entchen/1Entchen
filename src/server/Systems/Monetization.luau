@@ -91,6 +91,7 @@ local function setOwned(player: Player, data: Profile, key: string)
 	if key == "vip" then
 		player:SetAttribute("VIP", true)
 	end
+	Sync.mark(player, "passes")
 	Sync.mark(player, "boosts")
 	Monetization.PassesChanged:Fire(player, key)
 end
@@ -146,6 +147,7 @@ local function loadOwnership(player: Player, data: Profile)
 	end
 	player:SetAttribute("VIP", set.vip == true)
 	ready[player] = true
+	Sync.mark(player, "passes")
 	Sync.mark(player, "boosts")
 	Monetization.PlayerReady:Fire(player, data)
 end

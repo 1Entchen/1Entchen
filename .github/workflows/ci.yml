@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain (pinned versions, see rokit.toml)
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/rbxtools" && cd "$HOME/rbxtools"
+          fetch() { curl -sSfL -o "$1" "$2"; unzip -o -q "$1"; }
+          fetch rojo.zip     https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-linux-x86_64.zip
+          fetch selene.zip   https://github.com/Kampfkarren/selene/releases/download/0.27.1/selene-0.27.1-linux.zip
+          fetch stylua.zip   https://github.com/JohnnyMorganz/StyLua/releases/download/v0.20.0/stylua-linux-x86_64.zip
+          fetch lune.zip     https://github.com/lune-org/lune/releases/download/v0.8.9/lune-0.8.9-linux-x86_64.zip
+          fetch luaulsp.zip  https://github.com/JohnnyMorganz/luau-lsp/releases/download/1.38.0/luau-lsp-linux.zip
+          chmod +x rojo selene stylua lune luau-lsp
+          echo "$HOME/rbxtools" >> "$GITHUB_PATH"
+
+      - name: Format, lint, type-check, test, build, validate
+        run: scripts/check.sh
+
+      - name: Upload place file
+        uses: actions/upload-artifact@v4
+        with:
+          name: SlimeGarden-place
+          path: build/SlimeGarden.rbxlx

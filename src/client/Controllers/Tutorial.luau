@@ -151,7 +151,7 @@ function Tutorial.start()
 		Name = "Hint",
 		BackgroundColor3 = Theme.Colors.Green,
 		AnchorPoint = Vector2.new(0.5, 0),
-		Position = UDim2.new(0.5, 0, 0.27, 0),
+		Position = UDim2.new(0.5, 0, 0, 158),
 		Size = UDim2.fromOffset(560, 56),
 		Visible = false,
 		Parent = canvas,

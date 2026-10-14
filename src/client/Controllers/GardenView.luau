@@ -485,20 +485,19 @@ local function animate()
 		local isPlant = model.Parent.Name == "Plants"
 		local ripe = not isPlant or model:GetAttribute("Ripe") == true
 
-		if isPlant then
-			local target = if ripe
-				then 1
-				else Config.Growth.MinVisualScale + (1 - Config.Growth.MinVisualScale) * progressOf(
-					model
-				)
-			if math.abs(target - record.scale) > 0.006 then
+		local near = (record.base.Position - cameraPosition).Magnitude < 170
+		if isPlant and (near or ripe) then
+			local minScale = Config.Growth.MinVisualScale
+			local target = if ripe then 1 else minScale + (1 - minScale) * progressOf(model)
+			-- ~35 visible growth steps per plant keeps ScaleTo calls cheap.
+			if math.abs(target - record.scale) > 0.02 or (ripe and record.scale ~= 1) then
 				record.scale = target
 				model:PivotTo(record.base)
 				model:ScaleTo(target)
 			end
 		end
 
-		if ripe and (record.base.Position - cameraPosition).Magnitude < 170 then
+		if ripe and near then
 			local hop = math.abs(math.sin(t * 3.2 + record.phase)) * 0.35 * record.scale
 			model:PivotTo(record.base * CFrame.new(0, hop, 0))
 			if model:GetAttribute("Rainbow") then
@@ -507,11 +506,27 @@ local function animate()
 					body.Color = Color3.fromHSV((t * 0.25 + record.phase) % 1, 0.7, 1)
 				end
 			end
+			-- Orbiting stars (Cosmic / Prism): placed directly each frame so
+			-- they never drift relative to the bouncing body.
 			local orbit = model:FindFirstChild("Orbit")
 			local body = model.PrimaryPart
-			if orbit and orbit:IsA("Model") and body then
+			if orbit and body then
 				local center = body.Position
-				orbit:PivotTo(CFrame.new(center) * CFrame.Angles(0, t * 1.2, 0.3) * CFrame.new(-center))
+				local radius = body.Size.X * 0.68
+				for _, star in orbit:GetChildren() do
+					if star:IsA("BasePart") then
+						local index = tonumber(string.match(star.Name, "%d+")) or 0
+						local angle = index / 8 * math.pi * 2 + t * 1.2
+						star.CFrame = CFrame.new(
+							center
+								+ Vector3.new(
+									math.cos(angle) * radius,
+									math.sin(angle) * radius * 0.35,
+									math.sin(angle) * radius
+								)
+						)
+					end
+				end
 			end
 		end
 	end
