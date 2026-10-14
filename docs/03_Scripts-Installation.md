@@ -1,5 +1,12 @@
 # Phase 3 – Alle Scripts einbauen
 
+## Weg A (empfohlen): fertige Datei öffnen
+[`BrainrotBandits.rbxlx`](../BrainrotBandits.rbxlx) enthält **alle Scripts bereits am richtigen Ort**. Doppelklick → Studio öffnet das Spiel → **Play**. Beim ersten Start baut der Server die komplette Welt automatisch (Förderband, Basen, Schilder, Leaderboards, Klatsche, Licht).
+
+Willst du die Welt auch im Editor sehen und dekorieren: einmal in der Command Bar `require(game.ServerStorage.SetupWorld)()` ausführen und speichern.
+
+## Weg B: Scripts einzeln einfügen
+
 Alle Scripts liegen fertig im Ordner [`src/`](../src). Jede Datei wird in Studio als eigenes Script-Objekt angelegt: **Name = Dateiname ohne Endung** (ohne `.server` / `.client`), Inhalt komplett hineinkopieren.
 
 Voraussetzung: Phase 2 ist erledigt (`SetupWorld` wurde ausgeführt, die Ordner existieren).
@@ -11,6 +18,7 @@ Voraussetzung: Phase 2 ist erledigt (`SetupWorld` wurde ausgeführt, die Ordner 
 | `ReplicatedStorage/Shared/Config.lua` | **ModuleScript** | ReplicatedStorage › Shared | `Config` |
 | `ReplicatedStorage/Shared/Figures.lua` | **ModuleScript** | ReplicatedStorage › Shared | `Figures` |
 | `ReplicatedStorage/Shared/Format.lua` | **ModuleScript** | ReplicatedStorage › Shared | `Format` |
+| `ReplicatedStorage/Shared/FigureDesigns.lua` | **ModuleScript** | ReplicatedStorage › Shared | `FigureDesigns` |
 | `ReplicatedStorage/Shared/FigureBuilder.lua` | **ModuleScript** | ReplicatedStorage › Shared | `FigureBuilder` |
 | `ServerScriptService/ServerMain.server.lua` | **Script** | ServerScriptService | `ServerMain` |
 | `ServerScriptService/Services/RateLimit.lua` | **ModuleScript** | ServerScriptService › Services | `RateLimit` |
@@ -33,6 +41,8 @@ Voraussetzung: Phase 2 ist erledigt (`SetupWorld` wurde ausgeführt, die Ordner 
 | `StarterPlayerScripts/ClientModules/HUD.lua` | **ModuleScript** | … › ClientModules | `HUD` |
 | `StarterPlayerScripts/ClientModules/Menus.lua` | **ModuleScript** | … › ClientModules | `Menus` |
 | `StarterPlayerScripts/ClientModules/World.lua` | **ModuleScript** | … › ClientModules | `World` |
+| `StarterPlayerScripts/ClientModules/Tutorial.lua` | **ModuleScript** | … › ClientModules | `Tutorial` |
+| `ServerStorage/SetupWorld.lua` | **ModuleScript** | ServerStorage | `SetupWorld` |
 
 So legst du ein Script an: Rechtsklick auf den Ordner → **Insert Object** → Typ wählen → umbenennen → Doppelklick → alles markieren (Strg+A) → einfügen.
 
@@ -98,6 +108,6 @@ Der Client schickt nie Beträge, Preise oder Figuren-IDs, die der Server überni
 | `Infinite yield possible on ... WaitForChild("Shared")` | Ordner `ReplicatedStorage/Shared` fehlt |
 | `Kein DataStore-Zugriff: Test-Speicher (RAM) aktiv` | Nur ein Hinweis in Studio. Für echtes Speichern: veröffentlichen + API Services an |
 | `Dieses Angebot ist noch nicht eingerichtet` (im Spiel) | ID in `Config` eintragen (Phase 4) |
-| Figuren sind bunte Platzhalter | Normal. Eigene Modelle in `ReplicatedStorage/FigureModels` legen (Phase 2, Abschnitt 6) |
+| Figuren sind einfache bunte Platzhalter | `FigureDesigns` fehlt in ReplicatedStorage › Shared |
 
 Hilft das nicht, schick mir den kompletten roten Text aus dem Output.

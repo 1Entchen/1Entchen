@@ -20,6 +20,7 @@ local Notify = require(modules:WaitForChild("Notify"))
 local HUD = require(modules:WaitForChild("HUD"))
 local Menus = require(modules:WaitForChild("Menus"))
 local World = require(modules:WaitForChild("World"))
+local Tutorial = require(modules:WaitForChild("Tutorial"))
 
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local StateUpdate = Remotes:WaitForChild("StateUpdate")
@@ -53,6 +54,7 @@ local App = {
 	Gui = gui,
 	State = nil,
 	Menus = Menus,
+	Notify = Notify,
 }
 
 local priceCache = {}
@@ -132,6 +134,7 @@ Notify.Init(App)
 HUD.Init(App)
 Menus.Init(App)
 World.Init(App)
+Tutorial.Init(App)
 
 ------------------------------------------------------------------------
 -- Zustand
@@ -144,6 +147,7 @@ local function onState(state)
 	HUD.Update(state)
 	Menus.Update(state)
 	World.Update(state)
+	Tutorial.Update(state)
 
 	if not starterShown and not state.StarterBought and state.SessionTime >= Config.StarterOfferAfter then
 		starterShown = true
@@ -159,6 +163,9 @@ StateUpdate.OnClientEvent:Connect(onState)
 NotifyEvent.OnClientEvent:Connect(function(text, kind, sound, offer)
 	Notify.Toast(text, kind, offer)
 	App.Sound(sound)
+	if kind == "cash" then
+		Tutorial.OnCashCollected()
+	end
 end)
 AnnounceEvent.OnClientEvent:Connect(function(text, color)
 	Notify.Announce(text, color)

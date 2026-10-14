@@ -11,6 +11,14 @@ Alle Bilder sind eigene Vektorgrafiken, ohne fremde Marken oder Memes. Sie liege
 | `thumbnail_2_steal.png` | Thumbnail 2 (Stehlen, „…und renn!“) | 1920 × 1080 |
 | `thumbnail_3_collect.png` | Thumbnail 3 (alle Seltenheiten) | 1920 × 1080 |
 
+Außerdem fertig:
+| Ordner/Datei | Verwendung |
+|---|---|
+| `icons/pass_*.png` (7) | Bilder für die Game Passes (beim Anlegen im Creator Hub hochladen) |
+| `icons/product_*.png` (10) | Bilder für die Developer Products |
+| `figures/01_…png` bis `30_…png` | Sammelkarte jeder Figur (Discord, Social Media, Updates, Gruppen-Posts) |
+| `poster_all_figures.png` | Übersicht aller 30 Figuren (Discord, Gruppe, Werbung) |
+
 Hochladen: **Creator Hub → dein Spiel → Configure → Places → Thumbnails / Icon**.
 Ändern: Texte und Figuren stehen in `marketing/render.js`. Neu rendern mit `node marketing/render.js` (Node + Playwright nötig).
 

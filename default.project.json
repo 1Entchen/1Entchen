@@ -2,25 +2,43 @@
   "name": "BrainrotBandits",
   "tree": {
     "$className": "DataModel",
+    "Workspace": {
+      "$ignoreUnknownInstances": true,
+      "$properties": {
+        "StreamingEnabled": false
+      }
+    },
     "ReplicatedStorage": {
       "$ignoreUnknownInstances": true,
-      "Shared": { "$path": "src/ReplicatedStorage/Shared" }
+      "Shared": {
+        "$path": "src/ReplicatedStorage/Shared"
+      }
     },
     "ServerScriptService": {
       "$ignoreUnknownInstances": true,
-      "ServerMain": { "$path": "src/ServerScriptService/ServerMain.server.lua" },
-      "Services": { "$path": "src/ServerScriptService/Services" }
+      "ServerMain": {
+        "$path": "src/ServerScriptService/ServerMain.server.lua"
+      },
+      "Services": {
+        "$path": "src/ServerScriptService/Services"
+      }
     },
     "ServerStorage": {
       "$ignoreUnknownInstances": true,
-      "SetupWorld": { "$path": "src/ServerStorage/SetupWorld.lua" }
+      "SetupWorld": {
+        "$path": "src/ServerStorage/SetupWorld.lua"
+      }
     },
     "StarterPlayer": {
       "$ignoreUnknownInstances": true,
       "StarterPlayerScripts": {
         "$ignoreUnknownInstances": true,
-        "ClientMain": { "$path": "src/StarterPlayerScripts/ClientMain.client.lua" },
-        "ClientModules": { "$path": "src/StarterPlayerScripts/ClientModules" }
+        "ClientMain": {
+          "$path": "src/StarterPlayerScripts/ClientMain.client.lua"
+        },
+        "ClientModules": {
+          "$path": "src/StarterPlayerScripts/ClientModules"
+        }
       }
     }
   }

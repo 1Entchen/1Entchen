@@ -3,6 +3,8 @@
 	Alle Balancing-Werte und Robux-IDs an einer Stelle.
 	Nach dem Anlegen der Game Passes / Developer Products im Creator Dashboard
 	die IDs unten eintragen (0 = noch nicht angelegt).
+	Optional pro Pass/Product: Image = "rbxassetid://123..." zeigt im Shop ein Bild statt Emoji
+	(Bilder liegen fertig in marketing/icons/).
 ]]
 
 local Config = {}

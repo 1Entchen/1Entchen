@@ -8,6 +8,7 @@
 		require(game.ServerStorage.SetupWorld)()
 
 	Mehrfaches Ausführen ist erlaubt: alte Objekte werden ersetzt.
+	Fehlt die Welt beim Spielstart, ruft ServerMain dieses Modul automatisch auf.
 	Danach kann das Modul gelöscht werden (oder liegen bleiben, es läuft nie von selbst).
 ]]
 
@@ -299,6 +300,88 @@ local function buildLeaderboards()
 end
 
 ------------------------------------------------------------------------
+-- Beschriftungen: Schild über dem Band, Spielanleitung, Chancen-Tafel
+------------------------------------------------------------------------
+local function surfaceText(part, face, lines, ppS)
+	local gui = Instance.new("SurfaceGui")
+	gui.Name = "BoardGui"
+	gui.Face = face
+	gui.SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud
+	gui.PixelsPerStud = ppS or 30
+	gui.LightInfluence = 0
+	gui.Parent = part
+	local layout = Instance.new("UIListLayout")
+	layout.SortOrder = Enum.SortOrder.LayoutOrder
+	layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	layout.VerticalAlignment = Enum.VerticalAlignment.Center
+	layout.Padding = UDim.new(0.01, 0)
+	layout.Parent = gui
+	for i, line in ipairs(lines) do
+		local label = Instance.new("TextLabel")
+		label.LayoutOrder = i
+		label.BackgroundTransparency = 1
+		label.Size = UDim2.fromScale(0.94, line.H or 0.1)
+		label.Font = Enum.Font.FredokaOne
+		label.TextScaled = true
+		label.Text = line.Text
+		label.TextColor3 = line.Color or WHITE
+		label.TextStrokeTransparency = 0
+		label.TextXAlignment = line.Left and Enum.TextXAlignment.Left or Enum.TextXAlignment.Center
+		label.Parent = gui
+	end
+	return gui
+end
+
+local function buildSigns()
+	local signs = replace(Workspace, "Folder", "Signs")
+	local dark = Color3.fromRGB(28, 22, 48)
+
+	-- Großes Schild über dem Förderband (beidseitig)
+	local banner = makePart("ConveyorBanner", signs, Vector3.new(44, 8, 1), at(0, 22, 0), dark)
+	local bannerLines = {
+		{ Text = "🛒 KAUFE FIGUREN VOM BAND!", Color = Color3.fromRGB(255, 220, 80), H = 0.5 },
+		{ Text = "E drücken oder antippen  ·  je seltener, desto mehr Cash", H = 0.3 },
+	}
+	surfaceText(banner, Enum.NormalId.Front, bannerLines, 20)
+	surfaceText(banner, Enum.NormalId.Back, bannerLines, 20)
+	for _, x in ipairs({ -20, 20 }) do
+		makePart("BannerPole", signs, Vector3.new(0.6, 18, 0.6), at(x, 9, 7.5), Color3.fromRGB(255, 200, 40), Enum.Material.Metal)
+		makePart("BannerPole", signs, Vector3.new(0.6, 18, 0.6), at(x, 9, -7.5), Color3.fromRGB(255, 200, 40), Enum.Material.Metal)
+		makePart("BannerBeam", signs, Vector3.new(0.6, 0.6, 15.6), at(x, 18, 0), Color3.fromRGB(255, 200, 40), Enum.Material.Metal)
+	end
+
+	-- Spielanleitung (links, schaut zur Mitte)
+	local rules = makePart("RulesBoard", signs, Vector3.new(1, 18, 24), at(-150, 11, 0), dark)
+	makePart("RulesPost", signs, Vector3.new(1.2, 2, 1.2), at(-150, 1, 0), dark, Enum.Material.Metal)
+	surfaceText(rules, Enum.NormalId.Right, {
+		{ Text = "📖 SO SPIELST DU", Color = Color3.fromRGB(255, 220, 80), H = 0.12 },
+		{ Text = "1. Kauf Figuren am Förderband", Left = true, H = 0.08 },
+		{ Text = "2. Sie bringen dir jede Sekunde Cash", Left = true, H = 0.08 },
+		{ Text = "3. Lauf übers GRÜNE Feld = Cash einsammeln", Left = true, H = 0.08 },
+		{ Text = "4. ROTER Knopf = Basis abschließen", Left = true, H = 0.08 },
+		{ Text = "5. Stiehl bei anderen: E halten, heimrennen!", Left = true, H = 0.08 },
+		{ Text = "6. Diebe mit der Klatsche hauen (Taste 1)", Left = true, H = 0.08 },
+		{ Text = "7. Rebirth = dauerhaft mehr Cash", Left = true, H = 0.08 },
+		{ Text = "🎉 Wochenende: 2x CASH!", Color = Color3.fromRGB(255, 120, 220), H = 0.09 },
+	}, 24)
+
+	-- Chancen-Tafel (rechts, schaut zur Mitte)
+	local chances = makePart("ChancesBoard", signs, Vector3.new(1, 18, 24), at(150, 11, 0), dark)
+	makePart("ChancesPost", signs, Vector3.new(1.2, 2, 1.2), at(150, 1, 0), dark, Enum.Material.Metal)
+	surfaceText(chances, Enum.NormalId.Left, {
+		{ Text = "🎲 CHANCEN AUF DEM BAND", Color = Color3.fromRGB(255, 220, 80), H = 0.12 },
+		{ Text = "Common  62 %", Color = Color3.fromRGB(190, 190, 190), H = 0.08 },
+		{ Text = "Rare  25 %", Color = Color3.fromRGB(60, 140, 255), H = 0.08 },
+		{ Text = "Epic  9 %", Color = Color3.fromRGB(166, 75, 255), H = 0.08 },
+		{ Text = "Legendary  3,2 %", Color = Color3.fromRGB(255, 180, 0), H = 0.08 },
+		{ Text = "Mythic  0,7 %", Color = Color3.fromRGB(255, 60, 60), H = 0.08 },
+		{ Text = "SECRET  0,1 %", Color = Color3.fromRGB(255, 120, 220), H = 0.08 },
+		{ Text = "Mutation: Gold 4 % · Diamant 1 % · Regenbogen 0,2 %", H = 0.07 },
+		{ Text = "🍀 Jeden Abend Happy Hour: bessere Chancen!", Color = Color3.fromRGB(90, 255, 120), H = 0.07 },
+	}, 24)
+end
+
+------------------------------------------------------------------------
 -- Klatsche (Abwehr-Tool, jeder Spieler bekommt sie)
 ------------------------------------------------------------------------
 local function buildTool()
@@ -392,7 +475,9 @@ local function buildFolders()
 	ensureFolder(ReplicatedStorage, "Remotes")
 	ensureFolder(ServerScriptService, "Services")
 	ensureFolder(StarterPlayer:WaitForChild("StarterPlayerScripts"), "ClientModules")
-	Workspace.StreamingEnabled = false
+	pcall(function()
+		Workspace.StreamingEnabled = false -- geht nur im Editor, im laufenden Spiel ignoriert
+	end)
 end
 
 return function()
@@ -401,10 +486,13 @@ return function()
 	buildPlots()
 	buildBaseTemplate()
 	buildLeaderboards()
+	buildSigns()
 	buildTool()
 	buildSounds()
 	buildLighting()
 	buildFolders()
-	ChangeHistoryService:SetWaypoint("Brainrot Setup")
+	pcall(function()
+		ChangeHistoryService:SetWaypoint("Brainrot Setup")
+	end)
 	print("✅ Brainrot-Welt aufgebaut! Basis-Vorlage liegt in ServerStorage.BaseTemplate.")
 end

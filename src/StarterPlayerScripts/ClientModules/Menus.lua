@@ -143,7 +143,18 @@ local function productCard(parent, key, extraText, highlight)
 	if highlight then
 		UIKit.stroke(box, C.Accent, 3)
 	end
-	text(box, def.Icon, UDim2.new(1, 0, 0, 44), UDim2.fromOffset(0, 6), nil, 40)
+	if def.Image and def.Image ~= "" then
+		UIKit.new("ImageLabel", {
+			AnchorPoint = Vector2.new(0.5, 0),
+			Position = UDim2.new(0.5, 0, 0, 4),
+			Size = UDim2.fromOffset(48, 48),
+			BackgroundTransparency = 1,
+			Image = def.Image,
+			Parent = box,
+		})
+	else
+		text(box, def.Icon, UDim2.new(1, 0, 0, 44), UDim2.fromOffset(0, 6), nil, 40)
+	end
 	text(box, def.Name, UDim2.new(1, -12, 0, 28), UDim2.fromOffset(6, 50), C.Text, 22)
 	text(box, extraText or def.Desc or "", UDim2.new(1, -16, 0, 50), UDim2.fromOffset(8, 78), C.Sub, 16)
 	robuxButton(box, key)

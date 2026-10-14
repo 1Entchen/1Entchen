@@ -4,6 +4,18 @@
 ]]
 
 local ServerScriptService = game:GetService("ServerScriptService")
+local ServerStorage = game:GetService("ServerStorage")
+local Workspace = game:GetService("Workspace")
+
+-- Welt automatisch bauen, falls sie noch nicht existiert (z. B. direkt nach dem Öffnen der .rbxlx)
+if not Workspace:FindFirstChild("Conveyor") or not ServerStorage:FindFirstChild("BaseTemplate") then
+	local setup = ServerStorage:FindFirstChild("SetupWorld")
+	if setup then
+		require(setup)()
+	else
+		warn("[ServerMain] Welt fehlt und ServerStorage.SetupWorld ist nicht vorhanden!")
+	end
+end
 
 local folder = ServerScriptService:WaitForChild("Services")
 

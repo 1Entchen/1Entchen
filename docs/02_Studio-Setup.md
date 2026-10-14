@@ -158,7 +158,9 @@ Koordinaten lokal (Mitte des Bodens = 0,0,0; Tür = −Z):
 
 ## 6. Figuren-Modelle bauen (optional, aber wichtig für den Erfolg)
 
-Ohne eigene Modelle erzeugt `FigureBuilder` (Phase 3) automatisch einen **Platzhalter**: einen Körper in den Figurfarben mit Kopf, Augen und Namensschild. Damit ist das Spiel sofort testbar. Echte Modelle machen später den großen Unterschied bei Thumbnails und Clips.
+**Update:** Alle 30 Figuren sind jetzt fertig als 3D-Modelle in `FigureDesigns` enthalten (Vorschau: `marketing/poster_all_figures.png`). Eigene Modelle in `FigureModels` ersetzen sie automatisch.
+
+Ohne `FigureDesigns` und ohne eigene Modelle erzeugt `FigureBuilder` (Phase 3) automatisch einen **Platzhalter**: einen Körper in den Figurfarben mit Kopf, Augen und Namensschild. Damit ist das Spiel sofort testbar. Echte Modelle machen später den großen Unterschied bei Thumbnails und Clips.
 
 ### Regeln für jedes Modell
 

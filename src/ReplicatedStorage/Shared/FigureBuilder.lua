@@ -14,6 +14,7 @@ local Shared = script.Parent
 local Config = require(Shared:WaitForChild("Config"))
 local Figures = require(Shared:WaitForChild("Figures"))
 local Format = require(Shared:WaitForChild("Format"))
+local FigureDesigns = require(Shared:WaitForChild("FigureDesigns"))
 
 local FigureBuilder = {}
 
@@ -79,6 +80,43 @@ local function buildPlaceholder(fig)
 	return model
 end
 
+-- Baut eine Figur aus den 3D-Daten in FigureDesigns (Basis-Höhe 4 Studs)
+local function buildFromDesign(fig, design)
+	local model = Instance.new("Model")
+	local scale = fig.Height / 4
+
+	local root = newPart(model, "Root", Enum.PartType.Block, Vector3.new(3, 0.2, 3) * scale, CFrame.new(0, 0.1 * scale, 0), Color3.new(1, 1, 1))
+	root.Transparency = 1
+	model.PrimaryPart = root
+
+	for i, d in ipairs(design) do
+		local shape, sx, sy, sz, px, py, pz, hex, rx, ry, rz, material, tintable, alpha =
+			d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10], d[11], d[12], d[13], d[14]
+		local cf = CFrame.new(px * scale, py * scale, pz * scale) * CFrame.Angles(math.rad(rx), math.rad(ry), math.rad(rz))
+		local size = Vector3.new(sx, sy, sz) * scale
+		local part
+		if shape == "C" then
+			part = newPart(model, "Part" .. i, Enum.PartType.Cylinder, Vector3.new(size.Y, size.X, size.Z), cf * CFrame.Angles(0, 0, math.rad(90)), Color3.fromHex(hex))
+		else
+			part = newPart(model, "Part" .. i, Enum.PartType.Block, size, cf, Color3.fromHex(hex))
+			if shape == "E" then
+				local mesh = Instance.new("SpecialMesh")
+				mesh.MeshType = Enum.MeshType.Sphere
+				mesh.Parent = part
+			end
+		end
+		local ok, mat = pcall(function()
+			return Enum.Material[material]
+		end)
+		part.Material = ok and mat or Enum.Material.SmoothPlastic
+		part.Transparency = alpha or 0
+		if not tintable then
+			part:SetAttribute("NoTint", true)
+		end
+	end
+	return model
+end
+
 local function getModel(fig)
 	local folder = ReplicatedStorage:FindFirstChild("FigureModels")
 	local template = folder and folder:FindFirstChild(fig.Key)
@@ -88,7 +126,11 @@ local function getModel(fig)
 		return clone
 	end
 	if template then
-		warn(("[FigureBuilder] Modell '%s' braucht ein PrimaryPart namens Root. Nutze Platzhalter."):format(fig.Key))
+		warn(("[FigureBuilder] Modell '%s' braucht ein PrimaryPart namens Root. Nutze das Standard-Design."):format(fig.Key))
+	end
+	local design = FigureDesigns[fig.Key]
+	if design then
+		return buildFromDesign(fig, design)
 	end
 	return buildPlaceholder(fig)
 end
