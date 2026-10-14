@@ -1,0 +1,8 @@
+std = "roblox_globals"
+
+exclude = ["tests/harness/*", "build/*"]
+
+[lints]
+# Luau's own type checker covers these more precisely.
+shadowing = "allow"
+multiple_statements = "allow"
